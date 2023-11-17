@@ -45,8 +45,9 @@ class Training:
 
     def get_spent_calories(self) -> float:
         """Получить количество затраченных калорий."""
-        raise NotImplementedError('Необходимо реализовать '
-                                  'метод get_spent_calories()')
+        raise NotImplementedError(f'Необходимо реализовать '
+                                  f'метод get_spent_calories() '
+                                  f'в классе {self.__class__.__name__}.')
 
     def show_training_info(self) -> InfoMessage:
         """Вернуть информационное сообщение о выполненной тренировке."""
@@ -146,14 +147,13 @@ def read_package(workout_type: str,
                                                    'WLK': SportsWalking}
     if workout_type in training_classes:
         return training_classes[workout_type](*data)
-    else:
-        raise ValueError(f'Тренировка {workout_type} '
-                         f'не обрабатывается фитнес-трекером')
+    raise ValueError(f'Тренировка {workout_type} '
+                     f'не обрабатывается фитнес-трекером.')
 
 
 def main(training: Training) -> None:
     """Главная функция."""
-    info: Training.method() = training.show_training_info()
+    info: InfoMessage = training.show_training_info()
     print(info.get_message())
 
 
@@ -166,5 +166,5 @@ if __name__ == '__main__':
     ]
 
     for workout_type, data in packages:
-        training = read_package(workout_type, data)
+        training: Training = read_package(workout_type, data)
         main(training)
